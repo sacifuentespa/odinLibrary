@@ -13,18 +13,20 @@ class Book {
 }
 
 
-function addBookToLibrary() {
+function addBookToLibrary(e) {
+    e.preventDefault();
     const book = Object.create(Book);
     book.title = "Les miserables";
     book.author = "Victor Hugo";
     book.pages = 594;
     book.read = true;
     myLibrary.push(book);
+    console.log(myLibrary[0]);
 }
 
 addBookButton.addEventListener("click", () => {
   addBookForm.style.display = "block";
 });
 
-addBookToLibrary()
-console.log(myLibrary);
+addBookForm.addEventListener("submit", addBookToLibrary);
+
