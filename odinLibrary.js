@@ -16,34 +16,36 @@ class Book {
 
 function addBookToLibrary(e) {
     e.preventDefault();
-
+    //creates the book with its properties and add it to the library
     const book = Object.create(Book);
-    let allBooks = Array.from(document.querySelectorAll('.book-card'));
-    
-    
-
-    console.log(allBooks);
 
     book.title = document.getElementById('title').value;
     book.author = document.getElementById('author').value;
     book.pages = document.getElementById('pages').value;
     book.read = document.getElementById('read').checked;
+
     myLibrary.push(book);
     addBookForm.reset();
     addBookForm.style.display = "none";
     displayBooks();
-    allBooks = Array.from(document.querySelectorAll('.book-card'));
-    console.log(allBooks);
+    console.log(myLibrary)
 }
 
 addBookButton.addEventListener("click", () => {
+    let allBooks = Array.from(document.querySelectorAll('.book-card'));
+
+    if (allBooks.length > 0) {
+        for (let card of allBooks) {
+            card.style.display="none";
+        }
+    }
     addBookForm.style.display = "block";
 });
 
 addBookForm.addEventListener("submit", addBookToLibrary);
 
 function displayBooks() {
-    
+
 
     // Clear the existing content
     bookListContainer.innerHTML = '';
@@ -59,10 +61,35 @@ function displayBooks() {
             <p>Author: ${book.author}</p>
             <p>Pages: ${book.pages}</p>
             <p>Read: ${book.read ? 'Yes' : 'No'}</p>
-            <button class="edit-button" data-index="${index}">Edit</button>`;
-
+            <button class="delete-button" data-index="${index}">Delete</button>
+            <button class="read-button" data-index="${index}">Change read</button>`;
+            
         bookListContainer.appendChild(bookCard);
     });
+
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach((button) => {
+        button.addEventListener('click', deleteBook);
+    });
+
+    const readButtons = document.querySelectorAll('.read-button');
+    readButtons.forEach((button) => {
+        button.addEventListener('click', changeReadBook);
+    });
+}
+
+function deleteBook(e) {
+    const index = e.target.getAttribute('data-index');
+    myLibrary.splice(index, 1);
+    displayBooks(); // Refresh the book list
+}
+
+
+function changeReadBook(e) {
+    const index = e.target.getAttribute('data-index');
+    myLibrary[index].read===false ? myLibrary[index].read = true: myLibrary[index].read = false;
+
+    displayBooks(); // Refresh the book list
 }
 
 window.addEventListener('load', displayBooks);
