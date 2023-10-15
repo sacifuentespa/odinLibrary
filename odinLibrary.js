@@ -1,6 +1,7 @@
 const addBookButton = document.querySelector("#add-book-button");
 const addBookForm = document.querySelector("#add-book-form");
 const bookListContainer = document.getElementById('book-list');
+const dialog = document.querySelector("dialog");
 
 const myLibrary = [];
 
@@ -27,18 +28,21 @@ function addBookToLibrary(e) {
     myLibrary.push(book);
     addBookForm.reset();
     addBookForm.style.display = "none";
+    dialog.close();
     displayBooks();
     console.log(myLibrary)
 }
 
 addBookButton.addEventListener("click", () => {
-    let allBooks = Array.from(document.querySelectorAll('.book-card'));
+    dialog.showModal();
+    // this would help if I want the books to not being shown anywhere when filling the form 
+    /*let allBooks = Array.from(document.querySelectorAll('.book-card'));
 
     if (allBooks.length > 0) {
         for (let card of allBooks) {
             card.style.display="none";
         }
-    }
+    }*/
     addBookForm.style.display = "block";
 });
 
